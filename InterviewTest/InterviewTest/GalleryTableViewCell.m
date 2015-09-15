@@ -39,14 +39,22 @@
     static NSString *collectionCellIdentifier = @"GalleryImageCell";
     GalleryCollectionViewCell *collectionCell = [_galleryCollectionView dequeueReusableCellWithReuseIdentifier:collectionCellIdentifier forIndexPath:indexPath];
     
-    
     NSString *imageURL =[NSString stringWithFormat:@"%@/%@",BASE_URL,[[_imagesForCell objectAtIndex:indexPath.row] objectForKey:@"imgURL"]];
     
     [collectionCell.galleryImageView sd_setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:nil];
     
-    
     return collectionCell;
 }
 
+
+#pragma - mark UICollectionViewDelegate
+
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    NSString *imageURL =[NSString stringWithFormat:@"%@/%@",BASE_URL,[[_imagesForCell objectAtIndex:indexPath.row] objectForKey:@"imgURL"]];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowImage" object:imageURL userInfo:[NSDictionary dictionaryWithObjectsAndKeys:imageURL,@"imageURL", nil]];
+}
 
 @end
