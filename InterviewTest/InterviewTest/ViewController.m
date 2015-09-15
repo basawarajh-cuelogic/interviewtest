@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "APIRequester.h"
 #import "GalleryTableViewCell.h"
+#import "SDWebImage/UIImageView+WebCache.h"
 
 @interface ViewController ()
 {
@@ -32,6 +33,8 @@
     [self getImagesFromServer];
     
     sectionIndex = 0;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateImage:) name:@"ShowImage" object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -105,6 +108,12 @@
 
     
     return cell;
+}
+
+-(void)updateImage:(NSNotification *)data
+{
+    NSDictionary *dict = [data userInfo];
+    [_imgvw_Gallery sd_setImageWithURL:[NSURL URLWithString:[dict objectForKey:@"imageURL"]] placeholderImage:nil];
 }
 
 
